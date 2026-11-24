@@ -1,0 +1,11 @@
+{
+  "name": "a-squish",
+  "private": true,
+  "scripts": {
+    "start": "node tools/serve.cjs",
+    "test": "node tools/smoke.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.65.1"
+  }
+}

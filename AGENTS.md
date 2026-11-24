@@ -40,3 +40,20 @@ assets/models/vegetable.glb — 青菜人
 ## 後續方向（尚未實作）
 V0.4 專屬表情、配音及 ASMR；V0.5 場景、光影及震動；V1.0 PWA。先完成 V0.3，不擴大範圍。
 每次完成工作更新本文件的勾選狀態與測試紀錄，讓下一位開發者能接續。未測試事項明確標示；小步提交，避免破壞現有部署。
+
+## V0.3 海龜試作交接（2026-11-24）
+
+使用者已指定「先用海龜試做看看」，本輪優先完成單角色本機驗證；上方八角色整體待辦仍未完成，不勾選全部完成。
+
+- [x] 本機海龜素材確認：`D:/a_hero/角色/海龜/base_basic_pbr.glb`，複製至 `assets/models/turtle.glb`，原檔未修改。
+- [x] 海龜盤點：11,355,940 bytes（10.83 MiB）、100,000 三角面、單一 mesh；三張內嵌 2048×2048 PNG（diffuse / normal / metallic-roughness）；沒有骨架、動畫、Morph Targets 或壓縮擴充。Y 向上、正面朝 +Z，已由渲染截圖確認。
+- [x] Three.js / GLTFLoader 統一 0.170.0 import map；按需載入海龜、快取單一模型、載入進度／錯誤提示、自動置中落地與窄螢幕取景。其他角色保留 SVG，鴨董保留程式生成的 3D 原型。
+- [x] 海龜局部頂點變形試作：六種操作、平滑距離衰減、阻尼復原；raycast 命中後才擷取 pointer，3D 控制器以 capture 階段攔截舊 SVG handlers。支援旋轉、雙指整體縮放、取消／失焦復原，及手動關閉局部變形改用整體縮放。
+- [x] CLI Playwright + 本機 Chrome headless 桌面／iPhone 13 尺寸觸控模擬：GLB 和貼圖載入、六操作事件、旋轉不改訊息、空白處不觸發、角色切換、音效開關、模型載入失敗與 CDN 失敗時 SVG fallback。正常載入無 pageerror。
+- [x] 戳戳按住前後的 canvas 截圖不同，放手及雙指 touchCancel 後 canvas 與原始截圖逐位元一致；桌面與手機模擬皆通過。已檢視海龜正面與戳戳截圖，未見明顯破面。
+- [ ] 真手機、Edge、GitHub Pages 實際部署與低階裝置效能尚未驗證；其他五種局部操作的手感仍需使用者試玩。尚未實作表情／配音、碰撞或真正軟體物理；變形沿用原始法線，大變形的光照準確性仍需改進。
+- [ ] GLB 最佳化及公開素材授權未完成。此輪保留完整 PBR 品質；`.gitignore` 排除 `assets/models/*.glb`，不得強制加入或上傳。公開 repo 沒有海龜模型時會回退 SVG。
+
+本機試玩：`node tools/serve.cjs` → `http://127.0.0.1:8001` → 選海龜。開發測試：`npm.cmd install` 後 `npm.cmd test`（使用已安裝的 Chrome，需要網路載入 Three.js CDN）；`node tools/inspect-glb.cjs assets/models/turtle.glb` 可重查素材。測試截圖存放於忽略的 `.local/`。
+
+接續順序：先讓使用者試玩海龜並調整手感／效能，再處理最佳化及公開授權，最後擴展其餘七角色。鴨董、章魚、兔子已確認有 `D:/a_hero/a_hero/Art/<角色>/` 下的 FBX 與 .blend，尚未轉換。
